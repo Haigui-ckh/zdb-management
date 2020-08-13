@@ -24,6 +24,9 @@
       <el-select v-model="listQuery.education" placeholder="学历" clearable style="width: 80px" class="filter-item">
         <el-option v-for="item in educationOptions" :key="item" :label="item" :value="item" />
       </el-select>    
+      <el-select v-model="listQuery.auditStatus" placeholder="审查状态" clearable style="width: 110px" class="filter-item">
+        <el-option v-for="item in auditStatusOptions" :key="item" :label="item" :value="item" />
+      </el-select>
       <el-date-picker
         v-model="date"
         type="daterange"
@@ -118,19 +121,21 @@
       </el-table-column> 
       <el-table-column label="审核" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
+          <el-button v-if="row.status=='untreated'" size="mini" type="success" @click="handleModifyStatus(row,'passed')">
             通过
           </el-button>
-          <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
+          <el-button v-if="row.status=='passed'" size="mini"  disabled>
             已通过
           </el-button>
-          <el-button type="danger" v-if="row.status!='published'" size="mini">
-            驳回
-          </el-button>
-          <el-button type="danger" v-if="row.status!='draft'" size="mini">
+          <el-button v-if="row.status =='passed'" type="danger" size="mini" @click="handleModifyStatus(row,'rejected')">
             复驳
           </el-button>
-
+          <el-button v-if="row.status =='untreated'" type="danger" size="mini" @click="handleModifyStatus(row,'rejected')">
+            驳回
+          </el-button>
+          <el-button v-if="row.status =='rejected'" type="danger" size="mini" disabled>
+            已驳回
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -171,6 +176,7 @@ export default {
       countyOptions: ['永川','北碚','江北','渝北'],
       genderOptions: ['男','女'],
       educationOptions: ['高中','大专','本科','硕士研究生','博士研究生'],
+      auditStatusOptions: ['通过','驳回','复驳'],
       pickerOptions: {
         shortcuts: [
           {
@@ -209,15 +215,11 @@ export default {
     this.getList()
   },
   methods: {
-    // dateclick() {
-    //   console.log(this.date)
-    // },
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
-        // console.log(this.list)
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
@@ -248,7 +250,7 @@ export default {
     },
     handleModifyStatus(row, status) {
       this.$message({
-        message: '已通过',
+        message: '操作成功',
         type: 'success'
       })
       row.status = status

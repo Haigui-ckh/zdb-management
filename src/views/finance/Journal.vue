@@ -1,5 +1,14 @@
 <template>
   <div class="app-container">
+
+    <el-card class="balance">
+      <div slot="header">账户余额</div>
+      <div class="balance-container">
+        <span class="symbol">￥</span> 
+        <span>1000</span>
+      </div>
+
+    </el-card>
     <!-- 筛选器，搜索条件 -->
     <div class="filter-container">
       <el-select v-model="listQuery.province" placeholder="省份" clearable style="width: 90px" class="filter-item">
@@ -93,7 +102,6 @@
       <el-table-column label="操作状态" prop="operateStatus" align="center" width="200">
         <template slot-scope="{row}">
           <span>{{ row.merchantsname }}</span>
-          <img src="~@/assets/404_images/404.png" alt=""  width="50px" height="30px">
         </template>
       </el-table-column> 
     </el-table>
@@ -105,7 +113,7 @@ import { fetchList } from '@/api/article'
 import Pagination from '@/components/content/Pagination'
 
 export default {
-  name: "StoreSummary",
+  name: "Journal",
   components: {
     Pagination
   },
@@ -115,6 +123,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      date: '',
       listQuery: {
         page: 1,
         limit: 20,
@@ -189,10 +198,41 @@ export default {
       })
       row.status = status
     },
+    getSortClass: function(key) {
+      const sort = this.listQuery.sort
+      return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    sortChange(data) {
+      const { prop, order } = data
+      if (prop === 'id') {
+        this.sortByID(order)
+      }
+    },
+    sortByID(order) {
+      if (order === 'ascending') {
+        this.listQuery.sort = '+id'
+      } else {
+        this.listQuery.sort = '-id'
+      }
+      this.handleFilter()
+    },
   }
 
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.balance {
+  width: 200px;
+  margin-bottom: 10px;
+  .balance-container {
+    height: 50px;
+    line-height: 50px;
+  }
+  .symbol {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+
+}
 </style>

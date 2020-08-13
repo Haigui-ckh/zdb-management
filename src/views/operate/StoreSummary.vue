@@ -2,9 +2,6 @@
   <div class="app-container">
     <!-- 筛选器，搜索条件 -->
     <div class="filter-container">
-      <!-- <el-select v-model="listQuery.importance" placeholder="Imp" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select> -->
       <el-select v-model="listQuery.province" placeholder="省份" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in provinceOptions" :key="item" :label="item" :value="item" />
       </el-select>
@@ -90,28 +87,42 @@
       <el-table-column label="证照" prop="license" align="center" width="200">
         <template slot-scope="{row}">
           <span>{{ row.merchantsname }}</span>
-          <img src="~@/assets/404_images/404.png" alt=""  width="50px" height="30px">
+          <!-- <img src="~@/assets/404_images/404.png" alt=""  width="50px" height="30px" @click="ViewLarger(row)"> -->
+          <img :src="row.image_uri" alt=""  width="50px" height="30px" @click="ViewLarger(row)">
         </template>
       </el-table-column> 
+
       <el-table-column label="审核" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
+          <el-button v-if="row.status=='untreated'" size="mini" type="success" @click="handleModifyStatus(row,'passed')">
             通过
           </el-button>
-          <el-button v-if="row.status!='draft'" size="mini" @click="handleModifyStatus(row,'draft')">
+          <el-button v-if="row.status=='passed'" size="mini"  disabled>
             已通过
           </el-button>
-          <el-button type="danger" v-if="row.status!='published'" size="mini">
-            驳回
-          </el-button>
-          <el-button type="danger" v-if="row.status!='draft'" size="mini">
+          <el-button v-if="row.status =='passed'" type="danger" size="mini" @click="handleModifyStatus(row,'rejected')">
             复驳
           </el-button>
-
+          <el-button v-if="row.status =='untreated'" type="danger" size="mini" @click="handleModifyStatus(row,'rejected')">
+            驳回
+          </el-button>
+          <el-button v-if="row.status =='rejected'" type="danger" size="mini" disabled>
+            已驳回
+          </el-button>
         </template>
       </el-table-column>
 
     </el-table>
+
+    <el-dialog
+    title="查看大图"
+    :visible.sync="dialogVisible">
+      <img :src="tempimg">
+      <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -143,7 +154,9 @@ export default {
       cityOptions: ['大理','丽江','长沙','昆明'],
       countyOptions: ['永川','北碚','江北','渝北'],
       storeTypeOptions: ['商品店铺','外卖店铺'],
-      auditStatusOptions: ['通过','驳回']
+      auditStatusOptions: ['通过','驳回'],
+      dialogVisible: false,
+      tempimg: ''
 
     }
   },
@@ -187,11 +200,15 @@ export default {
     },
     handleModifyStatus(row, status) {
       this.$message({
-        message: '已通过',
+        message: '操作成功',
         type: 'success'
       })
       row.status = status
     },
+    ViewLarger(row) {
+      this.tempimg = row.image_uri
+      this.dialogVisible = true
+    }
   }
 
 }

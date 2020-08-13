@@ -302,7 +302,7 @@ export const asyncRoutes = [
   {
     path: '/finance',
     component: Layout,
-    name: 'Finance',
+    name: 'finance',
     meta: {
       title: '财务管理',
       icon: 'chart',
@@ -332,7 +332,7 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: '/appmall',
+        path: 'appmall',
         component: () => import('@/views/application/AppMall'),
         name: 'appmall',
         meta: {

@@ -18,6 +18,7 @@
       <el-radio v-model="timequantum" label="90" border>90天</el-radio> -->
       <el-radio-group v-model="timequantum" change="clickradio">
         <el-radio-button label="7">7天</el-radio-button>
+        <el-radio-button label="10">10天</el-radio-button>
         <el-radio-button label="15">15天</el-radio-button>
         <el-radio-button label="30">30天</el-radio-button>
         <el-radio-button label="90">90天</el-radio-button>
@@ -183,7 +184,6 @@ export default {
 
 .station-summary-row {
   
-  // background-color: orangered;
   .station-summary-col {
     height: 200px;
   }

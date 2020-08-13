@@ -25,7 +25,6 @@
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload">
-
           <div>上传图片</div>
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -39,12 +38,13 @@
           <el-input v-model="temp.appurl" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="将相关链接粘贴到此处" />
         </el-form-item>
       </el-form>
+
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
-          Cancel
+          取消
         </el-button>
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
-          Confirm
+          确定
         </el-button>
       </div>
     </el-dialog>
@@ -60,7 +60,6 @@ export default {
       cardlist: [],
       dialogFormVisible:false,
       dialogStatus: '',
-      // 弹窗用到的数据
       temp: {
         appname: '',
         appurl: '',
@@ -128,7 +127,6 @@ export default {
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {

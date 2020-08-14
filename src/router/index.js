@@ -59,137 +59,6 @@ export const constantRoutes = [
       }
     ]
   },
-  // 运营管理路由
-  // {
-  //   path: '/operate',
-  //   component: Layout,
-  //   name: 'Operate',
-  //   meta: {
-  //     title: '运营管理',
-  //     icon: 'nested',
-  //     role: ['master']
-  //   },
-  //   children: [
-  //     {
-  //       path: 'platdata',
-  //       component: () => import('@/views/operate/PlatData'),
-  //       name: 'platdata',
-  //       meta: {
-  //         title: '平台数据',
-  //         role: ['master']
-  //       }
-  //     },
-  //     {
-  //       path: 'storessummary',
-  //       component: () => import('@/views/operate/StoreSummary'),
-  //       name: 'merchantssummary',
-  //       meta: {
-  //         title: '商家汇总',
-  //         role: ['master']
-  //       }
-  //     },
-  //     {
-  //       path: 'storesummary',
-  //       component: () => import('@/views/operate/riderSummary'),
-  //       name: 'ridersummary',
-  //       meta: {
-  //         title: '骑手汇总',
-  //         role: ['master']
-  //       }
-  //     },
-  //     {
-  //       path: 'sitesummary',
-  //       component: () => import('@/views/operate/SiteSummary'),
-  //       name: 'sitesummary',
-  //       meta: {
-  //         title: '站点汇总',
-  //         role: ['master']
-  //       }
-  //     },
-  //     {
-  //       path: 'usersummary',
-  //       component: () => import('@/views/operate/UserSummary'),
-  //       name: 'usersummary',
-  //       meta: {
-  //         title: '用户汇总',
-  //         role: ['master']
-  //       }
-  //     },
-  //     {
-  //       path: 'deliverysummary',
-  //       component: () => import('@/views/operate/DeliverySummary'),
-  //       name: 'deliverySummary',
-  //       meta: {
-  //         title: '快递汇总',
-  //         role: ['master']
-  //       }
-  //     },
-  //     {
-  //       path: 'takeoutsummary',
-  //       component: () => import('@/views/operate/TakeOutSummary'),
-  //       name: 'takeoutsummary',
-  //       meta: {
-  //         title: '外卖汇总',
-  //         role: ['master']
-  //       }
-  //     },
-  //     {
-  //       path: 'announcement',
-  //       component: () => import('@/views/operate/Announcement'),
-  //       name: 'announcement',
-  //       meta: {
-  //         title: '平台公告',
-  //         role: ['master']
-  //       }
-  //     },
-  //   ]
-  // }, 
-  // 财务管理路由
-  // {
-  //   path: '/finance',
-  //   component: Layout,
-  //   name: 'Finance',
-  //   alwaysShow: true,
-  //   meta: {
-  //     title: '财务管理',
-  //     icon: 'chart',
-  //     role: ['master']
-  //   },
-  //   children: [
-  //     {
-  //       path: 'journal',
-  //       component: () => import('@/views/finance/Journal'),
-  //       name: 'journal',
-  //       meta: {
-  //         title: '平台收支',
-  //         role: ['master']
-  //       }
-  //     }
-  //   ]
-  // },
-  // 校园应用路由
-  // {
-  //   path: '/application',
-  //   component: Layout,
-  //   name: 'application',
-  //   alwaysShow: true,
-  //   meta: {
-  //     title: '校园应用',
-  //     icon: 'table',
-  //     role: ['master']
-  //   },
-  //   children: [
-  //     {
-  //       path: '/appmall',
-  //       component: () => import('@/views/application/AppMall'),
-  //       name: 'appmall',
-  //       meta: {
-  //         title: '应用商城',
-  //         role: ['master']
-  //       }
-  //     }
-  //   ]
-  // },
   // 404 page must be placed at the end !!!
   
   // { path: '*', redirect: '/404', hidden: true }
@@ -303,6 +172,7 @@ export const asyncRoutes = [
     path: '/finance',
     component: Layout,
     name: 'finance',
+    alwaysShow: true,
     meta: {
       title: '财务管理',
       icon: 'chart',
@@ -325,6 +195,7 @@ export const asyncRoutes = [
     path: '/application',
     component: Layout,
     name: 'application',
+    alwaysShow: true,
     meta: {
       title: '校园应用',
       icon: 'table',
@@ -340,6 +211,188 @@ export const asyncRoutes = [
           roles: ['admin']
         }
       }
+    ]
+  },
+  // 站点运营路由
+  {
+    path: '/stationoperate',
+    component: Layout,
+    name: 'stationoperate',
+    alwaysShow: true,
+    meta: {
+      title: '站点运营',
+      roles: ['station'],
+      icon: 'nested',
+    },
+    children: [
+      {
+        path: 'customerservice',
+        component: () => import('@/views/stationoperate/CustomerService'),
+        name: 'customerservice',
+        meta: {
+          title: '客服消息',
+          roles: ['station']
+        }
+      },
+      {
+        path: 'infosetting',
+        component: () => import('@/views/stationoperate/StationInfoSetting'),
+        name: 'infosetting',
+        meta: {
+          title: '站点信息设置',
+          roles: ['station']
+        }
+      },
+      {
+        path: 'deliveryservice',
+        component: () => import('@/views/stationoperate/DeliveryService'),
+        name: 'deliveryservice',
+        meta: {
+          title: '快递服务',
+          roles: ['station']
+        }
+      },
+      {
+        path: 'takeoutmall',
+        component: () => import('@/views/stationoperate/TakeOutMall'),
+        name: 'takeoutmall',
+        meta: {
+          title: '外卖商城',
+          roles: ['station']
+        }
+      }
+    ]
+  },
+  // 站点应用
+  {
+    path: '/stationapp',
+    component: Layout,
+    name: 'stationapp',
+    alwaysShow: true,
+    meta: {
+      title: '校园应用',
+      icon: 'table',
+      roles: ['station']
+    },
+    children: [
+      {
+        path: 'appmall',
+        component: () => import('@/views/stationapp/AppMall'),
+        name: 'appmall',
+        meta: {
+          title: '应用商城',
+          roles: ['station']
+        }
+      }
+    ]
+  },
+  // 站点财务
+  {
+    path: '/stationfinance',
+    component: Layout,
+    name: 'stationfinance',
+    alwaysShow: true,
+    meta: {
+      title: '财务管理',
+      icon: 'chart',
+      roles: ['station']
+    },
+    children: [
+      {
+        path: 'stationjournal',
+        component: () => import('@/views/stationfinance/StationJournal'),
+        name: 'stationjournal',
+        meta: {
+          title: '平台收支',
+          roles: ['station']
+        }
+      }
+    ]
+  },
+  // 站点管理系统
+  {
+    path: '/stationmanagement',
+    component: Layout,
+    name: 'stationmanagement',
+    alwaysShow: true,
+    meta: {
+      title: '管理系统',
+      icon: 'chart',
+      roles: ['station']
+    },
+    children: [
+      {
+        path: 'staffmanagement',
+        component: () => import('@/views/stationmanagement/StaffManagement'),
+        name: 'staffmanagement',
+        meta: {
+          title: '人员管理',
+          roles: ['station']
+        }
+      },
+      {
+        path: 'performancemanagement',
+        component: () => import('@/views/stationmanagement/PerformanceManagement'),
+        name: 'performancemanagement',
+        meta: {
+          title: '业绩管理',
+          roles: ['station']
+        }
+      },
+      {
+        path: 'mallmanagement',
+        component: () => import('@/views/stationmanagement/MallManagement'),
+        name: 'mallmanagement',
+        meta: {
+          title: '商城管理',
+          roles: ['station']
+        }
+      },
+      {
+        path: 'storemanagement',
+        component: () => import('@/views/stationmanagement/StoreManagement'),
+        name: 'storemanagement',
+        meta: {
+          title: '店铺审核',
+          roles: ['station']
+        }
+      },
+      {
+        path: 'deliveryfeemanagement',
+        component: () => import('@/views/stationmanagement/DeliveryFeeManagement'),
+        name: 'deliveryfeemanagement',
+        meta: {
+          title: '配送费设置',
+          roles: ['station']
+        }
+      },
+      {
+        path: 'reportmanagement',
+        component: () => import('@/views/stationmanagement/ReportManagement'),
+        name: 'reportmanagement',
+        meta: {
+          title: '举报商家',
+          roles: ['station']
+        }
+      },
+      {
+        path: 'commentmanagement',
+        component: () => import('@/views/stationmanagement/CommentManagement'),
+        name: 'commentmanagement',
+        meta: {
+          title: '评论管理',
+          roles: ['station']
+        }
+      },
+      {
+        path: 'usermanagement',
+        component: () => import('@/views/stationmanagement/UserManagement'),
+        name: 'usermanagement',
+        meta: {
+          title: '用户管理',
+          roles: ['station']
+        }
+      },
     ]
   },
   { path: '*', redirect: '/404', hidden: true }

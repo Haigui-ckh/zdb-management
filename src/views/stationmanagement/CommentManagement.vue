@@ -2,9 +2,13 @@
   <div class="app-container">
     <!-- 筛选器，搜索条件 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.id" placeholder="用户ID" style="width: 90px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.replyStatusOptions" placeholder="状态" clearable style="width: 110px" class="filter-item">
-        <el-option v-for="item in replyStatusOptions" :key="item" :label="item" :value="item" />
+      <el-select v-model="listQuery.type" placeholder="类型" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in commentTypeOptions" :key="item" :label="item" :value="item" />
+      </el-select>
+      <el-input v-model="listQuery.id" placeholder="店铺ID" style="width: 90px;" class="filter-item" @keyup.enter.native="handleFilter" /> 
+      <el-input v-model="listQuery.id" placeholder="用户ID" style="width: 90px;" class="filter-item" @keyup.enter.native="handleFilter" /> 
+      <el-select v-model="listQuery.commentStatus" placeholder="状态" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in commentStatusOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <el-date-picker
         v-model="date"
@@ -37,36 +41,42 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="用户头像" prop="profilepicture" align="center" width="100">
-        <template slot-scope="{row}">
-          <span>{{ row.merchantsname }}</span>
-          <!-- <img src="~@/assets/404_images/404.png" alt=""  width="50px" height="30px" @click="ViewLarger(row)"> -->
-          <img :src="row.image_uri" alt=""  width="50px" height="30px" @click="ViewLarger(row)">
+
+           
+      <el-table-column label="类型" prop="type" align="center" width="80">
+        <template slot-scope="{}">
+          <!-- <span>{{ row.id }}</span> -->
+          <span>快递</span>
         </template>
       </el-table-column> 
-      <el-table-column label="用户ID" prop="userid" sortable="custom" align="center" width="90" :class-name="getSortClass('id')">
+      <el-table-column label="店铺ID" prop="id" sortable="custom" align="center" width="120" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column> 
-      <el-table-column label="客服ID" prop="serviceid" sortable="custom" align="center" width="90" :class-name="getSortClass('id')">
+      <el-table-column label="用户ID" prop="id" sortable="custom" align="center" width="120" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column> 
-      <el-table-column label="内容" prop="chatcontent" align="center" min-width="150">
-        <template slot-scope="{row}">
-          <span>{{ row.merchantsname }}</span>
+      <el-table-column label="匿名" prop="anonymous" align="center" width="100">
+        <template slot-scope="{}">
+          <span>是</span>
         </template>
-      </el-table-column> 
-      <el-table-column label="状态" prop="replystatus" align="center" width="100">
-        <template slot-scope="{row}">
-          <span>{{ row.merchantsname }}</span>
+      </el-table-column>  
+      <el-table-column label="评论内容" prop="content" align="center" min-width="150">
+        <template slot-scope="{}">
+          <!-- <span>{{ row.id }}</span> -->
         </template>
-      </el-table-column> 
-      <el-table-column label="回复" prop="reply" align="center" width="100">
-        <template slot-scope="{row}">
-          <span>{{ row.merchantsname }}</span>
+      </el-table-column>
+      <el-table-column label="创建时间" prop="createTime" align="center" width="100">
+        <template slot-scope="{}">
+          <span>是</span>
+        </template>
+      </el-table-column>  
+      <el-table-column label="点赞" prop="good" align="center" width="100">
+        <template slot-scope="{}">
+          <span></span>
         </template>
       </el-table-column> 
       <el-table-column label="聊天记录" prop="chatrecord" align="center" width="130">
@@ -74,14 +84,14 @@
           <a @click="dialogVisible = true">点击查看</a>
         </template>
       </el-table-column> 
-      <el-table-column label="创建时间" prop="createtime" align="center" width="200">
+      <el-table-column label="状态" prop="workStatus" align="center" width="130">
         <template slot-scope="{row}">
           <span>{{ row.merchantsname }}</span>
         </template>
       </el-table-column> 
+
     </el-table>
 
-    <!-- 查看聊天记录的弹窗 -->
     <el-dialog
     title="查看聊天记录"
     :visible.sync="dialogVisible">
@@ -90,6 +100,7 @@
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
+
   </div>
 </template>
 
@@ -98,7 +109,7 @@ import { fetchList } from '@/api/article'
 import Pagination from '@/components/content/Pagination'
 
 export default {
-  name: "CustomerService",
+  name: "riderSummary",
   components: {
     Pagination
   },
@@ -111,13 +122,46 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        type: undefined,
-        sort: '+id'
+        name: undefined,
+        tel: undefined,
+        sort: '+id',
+        workStatus: undefined
       },
-      replyStatusOptions: ['未回复','已回复','自动回复'],
+      commentTypeOptions: ['快递','外卖'],
+      commentStatusOptions: ['正常','删除'],
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', [start, end]);
+            }
+          }, 
+          {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit('pick', [start, end]);
+            }
+          }, 
+          {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit('pick', [start, end]);
+            }
+          }
+        ]
+      },
       date: '',
       dialogVisible: false
-
     }
   },
   created() {
@@ -159,15 +203,11 @@ export default {
     },
     handleModifyStatus(row, status) {
       this.$message({
-        message: '操作成功',
+        message: '已通过',
         type: 'success'
       })
       row.status = status
     },
-    ViewLarger(row) {
-      this.tempimg = row.image_uri
-      this.dialogVisible = true
-    }
   }
 
 }

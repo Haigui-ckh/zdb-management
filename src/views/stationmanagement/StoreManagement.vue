@@ -2,21 +2,14 @@
   <div class="app-container">
     <!-- 筛选器，搜索条件 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.id" placeholder="用户ID" style="width: 90px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.replyStatusOptions" placeholder="状态" clearable style="width: 110px" class="filter-item">
-        <el-option v-for="item in replyStatusOptions" :key="item" :label="item" :value="item" />
+      <el-select v-model="listQuery.storeType" placeholder="店铺类型" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in storeTypeOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-date-picker
-        v-model="date"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        :picker-options="pickerOptions"
-        style="margin-left:10px">
-      </el-date-picker>
+      <el-input v-model="listQuery.id" placeholder="店铺ID" style="width: 90px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.storeName" placeholder="店铺名称" style="width: 110px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-select v-model="listQuery.uploadStatus" placeholder="营业执照" clearable style="width: 200px" class="filter-item">
+        <el-option v-for="item in uploadStatusOptions" :key="item" :label="item" :value="item" />
+      </el-select>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -37,58 +30,67 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="用户头像" prop="profilepicture" align="center" width="100">
+      <el-table-column label="店铺类型" prop="storeType" align="center" width="100">
         <template slot-scope="{row}">
           <span>{{ row.merchantsname }}</span>
-          <!-- <img src="~@/assets/404_images/404.png" alt=""  width="50px" height="30px" @click="ViewLarger(row)"> -->
+        </template>
+      </el-table-column> 
+      <el-table-column label="店铺ID" prop="id" sortable="custom" align="center" width="110" :class-name="getSortClass('id')">
+        <template slot-scope="{row}">
+          <span>{{ row.id }}</span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="店铺名称" prop="storeName" align="center" min-width="110">
+        <template slot-scope="{row}">
+          <span>{{ row.merchantsname }}</span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="绑定店长" prop="storeMaster" align="center" width="100">
+        <template slot-scope="{row}">
+          <span>{{ row.merchantsname }}</span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="催单客服电话" prop="merchantTel" align="center" width="130">
+        <template slot-scope="{row}">
+          <span>{{ row.merchantsname }}</span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="营业执照" prop="license" align="center" width="200">
+        <template slot-scope="{row}">
+          <span>{{ row.merchantsname }}</span>
           <img :src="row.image_uri" alt=""  width="50px" height="30px" @click="ViewLarger(row)">
         </template>
       </el-table-column> 
-      <el-table-column label="用户ID" prop="userid" sortable="custom" align="center" width="90" :class-name="getSortClass('id')">
+      <el-table-column label="审核" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
+          <el-button v-if="row.status=='untreated'" size="mini" type="success" @click="handleModifyStatus(row,'passed')">
+            提交
+          </el-button>
+          <el-button v-if="row.status=='passed'" size="mini"  disabled>
+            已通过
+          </el-button>
+          <el-button v-if="row.status =='passed'" type="danger" size="mini" @click="handleModifyStatus(row,'rejected')">
+            复驳
+          </el-button>
+          <el-button v-if="row.status =='untreated'" type="danger" size="mini" @click="handleModifyStatus(row,'rejected')">
+            驳回
+          </el-button>
+          <el-button v-if="row.status =='rejected'" type="danger" size="mini" disabled>
+            已驳回
+          </el-button>
         </template>
-      </el-table-column> 
-      <el-table-column label="客服ID" prop="serviceid" sortable="custom" align="center" width="90" :class-name="getSortClass('id')">
-        <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
-        </template>
-      </el-table-column> 
-      <el-table-column label="内容" prop="chatcontent" align="center" min-width="150">
-        <template slot-scope="{row}">
-          <span>{{ row.merchantsname }}</span>
-        </template>
-      </el-table-column> 
-      <el-table-column label="状态" prop="replystatus" align="center" width="100">
-        <template slot-scope="{row}">
-          <span>{{ row.merchantsname }}</span>
-        </template>
-      </el-table-column> 
-      <el-table-column label="回复" prop="reply" align="center" width="100">
-        <template slot-scope="{row}">
-          <span>{{ row.merchantsname }}</span>
-        </template>
-      </el-table-column> 
-      <el-table-column label="聊天记录" prop="chatrecord" align="center" width="130">
-        <template slot-scope="{}">
-          <a @click="dialogVisible = true">点击查看</a>
-        </template>
-      </el-table-column> 
-      <el-table-column label="创建时间" prop="createtime" align="center" width="200">
-        <template slot-scope="{row}">
-          <span>{{ row.merchantsname }}</span>
-        </template>
-      </el-table-column> 
+      </el-table-column>
+
     </el-table>
 
-    <!-- 查看聊天记录的弹窗 -->
     <el-dialog
-    title="查看聊天记录"
+    title="查看大图"
     :visible.sync="dialogVisible">
       <img :src="tempimg">
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    </span>
     </el-dialog>
   </div>
 </template>
@@ -98,7 +100,7 @@ import { fetchList } from '@/api/article'
 import Pagination from '@/components/content/Pagination'
 
 export default {
-  name: "CustomerService",
+  name: "StoreSummary",
   components: {
     Pagination
   },
@@ -111,12 +113,16 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
+        province: undefined,
+        importance: undefined,
+        title: undefined,
         type: undefined,
         sort: '+id'
       },
-      replyStatusOptions: ['未回复','已回复','自动回复'],
-      date: '',
-      dialogVisible: false
+      storeTypeOptions: ['商品店铺','外卖店铺'],
+      uploadStatusOptions: ['营业执照','未上传营业执照/经营许可','只上传营业执照','只上传经营许可证'],
+      dialogVisible: false,
+      tempimg: ''
 
     }
   },
@@ -129,6 +135,7 @@ export default {
       fetchList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
+        // console.log(this.list)
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false

@@ -2,23 +2,12 @@
   <div class="app-container">
     <!-- 筛选器，搜索条件 -->
     <div class="filter-container">
-      <el-select v-model="listQuery.province" placeholder="省份" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in provinceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery.city" placeholder="城市" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in cityOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery.county" placeholder="区县" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in countyOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery.address" placeholder="地址" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in addressOptions" :key="item" :label="item" :value="item" />
-      </el-select>
       <el-select v-model="listQuery.type" placeholder="类型" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in takeouttypeOptions" :key="item" :label="item" :value="item" />
       </el-select>
+      <el-input v-model="listQuery.usertel" placeholder="客户电话" style="width: 110px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-input v-model="listQuery.takeoutMantel" placeholder="外卖员电话" style="width: 110px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.id" placeholder="外卖员ID" style="width: 90px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.takeoutManid" placeholder="外卖员ID" style="width: 120px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.ordertype" placeholder="订单状态" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in orderTypeOptions" :key="item" :label="item" :value="item" />
       </el-select>
@@ -42,22 +31,7 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="省份" prop="province" align="center" width="80">
-        <template slot-scope="{row}">
-          <span>{{ row.province }}</span>
-        </template>
-      </el-table-column> 
-      <el-table-column label="城市" prop="city" align="center" width="80">
-        <template slot-scope="{row}">
-          <span>{{ row.city }}</span>
-        </template>
-      </el-table-column> 
-      <el-table-column label="区县" prop="county" align="center" width="80">
-        <template slot-scope="{row}">
-          <span>{{ row.county }}</span>
-        </template>
-      </el-table-column> 
-      <el-table-column label="地址" prop="address" align="center" min-width="150">
+      <el-table-column label="详细地址" prop="address" align="center" min-width="150">
         <template slot-scope="{}">
           <!-- <span>{{ row.id }}</span> -->
         </template>
@@ -67,7 +41,7 @@
           <span>{{ row.merchantsname }}</span>
         </template>
       </el-table-column> 
-      <el-table-column label="外卖员ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="外卖员ID" prop="id" sortable="custom" align="center" width="120" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
@@ -97,7 +71,7 @@ import { fetchList } from '@/api/article'
 import Pagination from '@/components/content/Pagination'
 
 export default {
-  name: "StoreSummary",
+  name: "TakeOutMall",
   components: {
     Pagination
   },

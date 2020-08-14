@@ -2,48 +2,27 @@
   <div class="app-container">
     <!-- 功能展示 -->
     <div class="grid">
-      <el-card class="appplus">
-        <span>添加新功能</span>
-        <img src="~@/assets/common/plus.png"  @click="handleCreate">
-      </el-card>
 
-      <el-card v-for="(item,index) in cardlist" :key="index" class="appitem">
-        <img :src="item.image_uri" >
-        <p> {{item.appname}}</p>
-        <el-button size="mini" type="success" @click="handleUpdate(item)">
-          修改
-        </el-button>
-      </el-card>
+        <el-card v-for="(item,index) in cardlist" :key="index" class="appitem" @click.native="handleUpdate(item)">
+          <img :src="item.image_uri" >
+          <p> {{item.appname}}</p>
+        </el-card>     
+      
     </div>
 
-    <!-- 添加和修改的弹窗 -->
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+
+    <el-dialog :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="margin-left:50px;">
-        <el-upload
-          class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
-          <div>上传图片</div>
-          <img v-if="imageUrl" :src="imageUrl" class="avatar">
-          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-
-        </el-upload>
-
         <el-form-item label="功能名" prop="name">
-          <el-input v-model="temp.appname" />
+          {{temp.appname}}
         </el-form-item>
         <el-form-item label="功能链接" prop="url">
-          <el-input v-model="temp.appurl" :autosize="{ minRows: 2, maxRows: 4}" type="textarea" placeholder="将相关链接粘贴到此处" />
+          {{temp.appurl}}
         </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
-          取消
-        </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button type="primary" @click="dialogFormVisible = false">
           确定
         </el-button>
       </div>
@@ -64,10 +43,6 @@ export default {
         appname: '',
         appurl: '',
         image_uri: ''
-      },
-      textMap: {
-        update: '修改',
-        create: '添加'
       },
       rules: {
         title: [{ required: true, message: 'title is required', trigger: 'blur' }],
@@ -126,8 +101,8 @@ export default {
       })
     },
     handleUpdate(row) {
+      console.log('点击')
       this.temp = Object.assign({}, row) // copy obj
-      this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
@@ -174,26 +149,25 @@ export default {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     grid-column-gap: 15px;
     grid-row-gap: 15px;
-  
-  }
-  .appitem {
-    height: 170px;
-    text-align: center;
+    
+    .appitem {
+      height: 170px;
+      text-align: center;
+      cursor: pointer;
 
-    img {
-      width: 80%;
-      margin: 0 auto;
-      margin-bottom: 10px;
+      img {
+        width: 80%;
+        margin: 0 auto;
+        margin-bottom: 40%;
+      }
+
+      p {
+        padding: 0;
+        margin: 0;
+        margin-bottom: 10px;
+      }
     }
-
-    p {
-      padding: 0;
-      margin: 0;
-      margin-bottom: 10px;
-    }
   }
-
-  
   .appplus{
     text-align: center;
    

@@ -2,26 +2,23 @@
   <div class="app-container">
     <!-- 筛选器，搜索条件 -->
     <div class="filter-container">
-      <el-select v-model="listQuery.province" placeholder="省份" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in provinceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery.city" placeholder="城市" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in cityOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-select v-model="listQuery.county" placeholder="区县" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in countyOptions" :key="item" :label="item" :value="item" />
-      </el-select>
       <el-select v-model="listQuery.address" placeholder="地址" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in addressOptions" :key="item" :label="item" :value="item" />
       </el-select>
       <el-select v-model="listQuery.type" placeholder="类型" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in takeouttypeOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-input v-model="listQuery.takeoutMantel" placeholder="外卖员电话" style="width: 110px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-input v-model="listQuery.id" placeholder="外卖员ID" style="width: 90px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.ordertype" placeholder="订单状态" clearable style="width: 120px" class="filter-item">
+      <el-input v-model="listQuery.userid" placeholder="用户ID" style="width: 90px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.orderid" placeholder="订单号" style="width: 90px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.merchantid" placeholder="店主ID" style="width: 90px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.usertel" placeholder="客户电话" style="width: 110px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-select v-model="listQuery.paytype" placeholder="支付状态" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in payTypeOptions" :key="item" :label="item" :value="item" />
+      </el-select>
+      <el-select v-model="listQuery.ordertype" placeholder="受理状态" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in orderTypeOptions" :key="item" :label="item" :value="item" />
       </el-select>
+
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -42,37 +39,32 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="省份" prop="province" align="center" width="80">
-        <template slot-scope="{row}">
-          <span>{{ row.province }}</span>
-        </template>
-      </el-table-column> 
-      <el-table-column label="城市" prop="city" align="center" width="80">
-        <template slot-scope="{row}">
-          <span>{{ row.city }}</span>
-        </template>
-      </el-table-column> 
-      <el-table-column label="区县" prop="county" align="center" width="80">
-        <template slot-scope="{row}">
-          <span>{{ row.county }}</span>
-        </template>
-      </el-table-column> 
-      <el-table-column label="地址" prop="address" align="center" min-width="150">
-        <template slot-scope="{}">
-          <!-- <span>{{ row.id }}</span> -->
-        </template>
-      </el-table-column> 
       <el-table-column label="类型" prop="type" align="center" width="130">
         <template slot-scope="{row}">
           <span>{{ row.merchantsname }}</span>
         </template>
       </el-table-column> 
-      <el-table-column label="外卖员ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="方式" prop="method" align="center" width="130">
+        <template slot-scope="{}">
+          <span>配送上门</span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="订单号" prop="orderid" align="center" width="130">
+        <template slot-scope="{row}">
+          <span>{{row.id}}</span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="店主ID" prop="merchantid" sortable="custom" align="center" width="90" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column> 
-      <el-table-column label="外卖员电话" prop="deliveryManTel" align="center" width="130">
+      <el-table-column label="用户ID" prop="userid" sortable="custom" align="center" width="90" :class-name="getSortClass('id')">
+        <template slot-scope="{row}">
+          <span>{{ row.id }}</span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="订单详情" prop="orderDetails" align="center" min-width="150">
         <template slot-scope="{row}">
           <span>{{ row.merchantsname }}</span>
         </template>
@@ -82,9 +74,24 @@
           <span>{{ row.merchantsname }}</span>
         </template>
       </el-table-column> 
-      <el-table-column label="订单状态" prop="orderStatus" align="center" width="130">
+      <el-table-column label="详细地址" prop="address" align="center" min-width="150">
+        <template slot-scope="{}">
+          <!-- <span>{{ row.id }}</span> -->
+        </template>
+      </el-table-column> 
+      <el-table-column label="支付" prop="payWay" align="center" width="100">
+        <template slot-scope="{}">
+          <span>在线支付</span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="受理" prop="orderStatus" align="center" width="100">
+        <template slot-scope="{}">
+          <span></span>
+        </template>
+      </el-table-column> 
+      <el-table-column label="下单时间" prop="orderTime" align="center" width="130">
         <template slot-scope="{row}">
-          <span>{{ row.merchantsname }}</span>
+          <span>{{ row.timestamp }}</span>
         </template>
       </el-table-column> 
 
@@ -110,20 +117,17 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        province: undefined,
-        city: undefined,
-        county: undefined,
-        address: undefined,
+        userid: undefined,
+        orderid: undefined,
+        merchantid: undefined,
         type: undefined,
         tel: undefined,
         ordertype: undefined,
         sort: '+id'
       },
-      provinceOptions: ['北京','上海','重庆','广东'],
-      cityOptions: ['大理','丽江','长沙','昆明'],
-      countyOptions: ['永川','北碚','江北','渝北'],
       takeouttypeOptions: ['外卖'],
-      orderTypeOptions: ['待支付','待取单','取单中','送单中','已完成','已撤销'],
+      orderTypeOptions: ['已受理','取单中','配送中','已完成','已撤销'],
+      payTypeOptions: ['已支付','未支付']
 
     }
   },

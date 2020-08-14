@@ -1,3 +1,6 @@
+##登录名：admin 进入后台管理系统  station  进入站点管理系统
+
+
 
 ## Build Setup
 

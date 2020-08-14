@@ -27,17 +27,7 @@
       <el-select v-model="listQuery.operateStatus" placeholder="操作状态" clearable style="width: 110px" class="filter-item">
         <el-option v-for="item in operateOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-date-picker
-        v-model="date"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        :picker-options="pickerOptions"
-        style="margin-left:10px">
-      </el-date-picker>
+      <DateChoose @dateChoose="dateChoose"></DateChoose>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -111,11 +101,13 @@
 <script>
 import { fetchList } from '@/api/article'
 import Pagination from '@/components/content/Pagination'
+import DateChoose from '@/components/content/DateChoose'
 
 export default {
   name: "Journal",
   components: {
-    Pagination
+    Pagination,
+    DateChoose
   },
   data() {
     return{
@@ -127,6 +119,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
+        date: undefined,
         province: undefined,
         importance: undefined,
         title: undefined,
@@ -216,6 +209,9 @@ export default {
       }
       this.handleFilter()
     },
+    dateChoose(date) {
+      this.listQuery.date = date
+    }
   }
 
 }

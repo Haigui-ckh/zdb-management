@@ -10,17 +10,7 @@
       <el-select v-model="listQuery.commentStatus" placeholder="状态" clearable style="width: 120px" class="filter-item">
         <el-option v-for="item in commentStatusOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-date-picker
-        v-model="date"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        :picker-options="pickerOptions"
-        style="margin-left:10px">
-      </el-date-picker>
+      <DateChoose @dateChoose="dateChoose"></DateChoose>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -107,11 +97,13 @@
 <script>
 import { fetchList } from '@/api/article'
 import Pagination from '@/components/content/Pagination'
+import DateChoose from '@/components/content/DateChoose'
 
 export default {
   name: "riderSummary",
   components: {
-    Pagination
+    Pagination,
+    DateChoose
   },
   data() {
     return{
@@ -122,6 +114,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
+        date: undefined,
         name: undefined,
         tel: undefined,
         sort: '+id',
@@ -129,38 +122,6 @@ export default {
       },
       commentTypeOptions: ['快递','外卖'],
       commentStatusOptions: ['正常','删除'],
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, 
-          {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, 
-          {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }
-        ]
-      },
-      date: '',
       dialogVisible: false
     }
   },
@@ -178,6 +139,9 @@ export default {
           this.listLoading = false
         }, 1.5 * 1000)
       })
+    },
+    dateChoose(date) {
+      this.listQuery.date = date
     },
     handleFilter() {
       this.listQuery.page = 1

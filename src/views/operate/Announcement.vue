@@ -3,17 +3,7 @@
     <!-- 筛选器，搜索条件 -->
     <div class="filter-container"> 
       <el-input v-model="listQuery.title" placeholder="公告标题" style="width: 110px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-date-picker
-        v-model="date"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        :picker-options="pickerOptions"
-        style="margin-left:10px">
-      </el-date-picker>
+      <DateChoose @dateChoose="dateChoose"></DateChoose>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -89,11 +79,13 @@
 <script>
 import { fetchList } from '@/api/article'
 import Pagination from '@/components/content/Pagination'
+import DateChoose from '@/components/content/DateChoose'
 
 export default {
   name: "Announcement",
   components: {
-    Pagination
+    Pagination,
+    DateChoose
   },
   data() {
     return{
@@ -104,40 +96,9 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
+        date: undefined,
         title: '',
       },
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, 
-          {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, 
-          {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }
-        ]
-      },
-      date: '',
       dialogFormVisible: false,
       temp: {
         title: '',
@@ -237,6 +198,9 @@ export default {
           })
         }
       })
+    },
+    dateChoose(date) {
+      this.listQuery.date = date
     }
   }
 

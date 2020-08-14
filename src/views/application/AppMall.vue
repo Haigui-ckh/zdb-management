@@ -48,13 +48,20 @@
         </el-button>
       </div>
     </el-dialog>
+
+    <DateChoose @dateChoose="dateChoose"></DateChoose>
   </div>
 </template>
 
 <script>
 import { fetchList } from '@/api/article'
+import DateChoose from '@/components/content/DateChoose'
+
 export default {
   name: "AppMall",
+  components: {
+    DateChoose
+  },
   data() {
     return {
       cardlist: [],
@@ -76,9 +83,11 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        sort: '+id'
+        sort: '+id',
+        date: undefined
       },
-      imageUrl: ''
+      imageUrl: '',
+      
     }
   },
   created() {
@@ -162,6 +171,9 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!');
       }
       return isLt2M;
+    },
+    dateChoose(date) {
+      this.listQuery.date = date
     }
   }
 }

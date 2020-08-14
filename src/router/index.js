@@ -47,14 +47,14 @@ export const constantRoutes = [
   // 首页重定向
   {
     path: '/',
-    redirect: 'platdata',
+    redirect: 'indexplatdata',
     component: Layout,
     hidden: true,
     children: [
       {
-        path: 'platdata',
+        path: 'indexplatdata',
         component: () => import('@/views/operate/PlatData'),
-        name: 'platdata',
+        name: 'indexplatdata',
         meta: { title: '平台数据', affix: true }
       }
     ]
@@ -276,9 +276,9 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'appmall',
+        path: 'stationappmall',
         component: () => import('@/views/stationapp/AppMall'),
-        name: 'appmall',
+        name: 'stationappmall',
         meta: {
           title: '应用商城',
           roles: ['station']

@@ -19,6 +19,7 @@
       <el-select v-model="listQuery.auditStatus" placeholder="审查状态" clearable style="width: 110px" class="filter-item">
         <el-option v-for="item in auditStatusOptions" :key="item" :label="item" :value="item" />
       </el-select>
+      <DateChoose @dateChoose="dateChoose"></DateChoose>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -129,11 +130,13 @@
 <script>
 import { fetchList } from '@/api/article'
 import Pagination from '@/components/content/Pagination'
+import DateChoose from '@/components/content/DateChoose'
 
 export default {
   name: "StoreSummary",
   components: {
-    Pagination
+    Pagination,
+    DateChoose
   },
   data() {
     return{
@@ -144,6 +147,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
+        date: undefined,
         province: undefined,
         importance: undefined,
         title: undefined,
@@ -208,7 +212,10 @@ export default {
     ViewLarger(row) {
       this.tempimg = row.image_uri
       this.dialogVisible = true
-    }
+    },
+    dateChoose(date) {
+      this.listQuery.date = date
+    },
   }
 
 }

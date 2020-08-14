@@ -63,7 +63,7 @@ import Pagination from '@/components/content/Pagination'
 export default {
   name: "DeliveryFeeManagement",
   components: {
-    Pagination
+    Pagination,
   },
   data() {
     return{

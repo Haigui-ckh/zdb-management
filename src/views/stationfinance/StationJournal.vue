@@ -1,14 +1,82 @@
 <template>
   <div class="app-container">
 
-    <el-card class="balance">
-      <div slot="header">账户余额</div>
-      <div class="balance-container">
-        <span class="symbol">￥</span> 
-        <span>1000</span>
+    <el-card class="salary">
+      <div slot="header">薪资发放</div>
+      <div class="salary-container">
+        <el-row>
+          <el-col :span="6">
+            <el-form size="mini">
+              <el-form-item label="人员选择">
+                <el-select v-model="salary.staff" placeholder="人员选择" clearable style="width: 120px">
+                  <el-option v-for="item in staffOptions" :key="item" :label="item" :value="item" />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="总单">
+                <el-input  v-model="salary.orderNum" style="width: 90px;"></el-input>
+              </el-form-item>
+              <el-form-item label="等级">
+                <el-select v-model="salary.grade" placeholder="等级选择" clearable style="width: 120px" class="filter-item">
+                  <el-option v-for="item in staffGradeOptions" :key="item" :label="item" :value="item" />
+                </el-select>
+              </el-form-item>
+              <el-form-item v-model="salary.salary" label="薪资">
+                <el-input style="width: 90px;"></el-input>
+              </el-form-item>            
+              <el-form-item label="全勤">
+                <el-input  v-model="salary.fullaAttendance" style="width: 90px;"></el-input>
+              </el-form-item>     
+            </el-form>       
+          </el-col>
+          <el-col :span="6">
+            <el-form size="mini">
+              <el-form-item label="工龄">
+                <el-input  v-model="salary.workYears" style="width: 90px;"></el-input>
+              </el-form-item>
+              <el-form-item label="好评率">
+                <el-input  v-model="salary.praiseRate" style="width: 90px;"></el-input>
+              </el-form-item>
+              <el-form-item label="超单">
+                <el-input  v-model="salary.superOrder" style="width: 90px;"></el-input>
+              </el-form-item>
+              <el-form-item label="维护客服数量">
+                <el-input  v-model="salary.maintainServiceNum" style="width: 90px;"></el-input>
+              </el-form-item>
+              <el-form-item label="坐班">
+                <el-input  v-model="salary.keepWorking" style="width: 90px;"></el-input>
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col :span="6">
+            <el-form size="mini">
+              <el-form-item label="送水补贴">
+                <el-input  v-model="salary.waterSubsidy" style="width: 90px;"></el-input>
+              </el-form-item>
+              <el-form-item label="奖金">
+                <el-input  v-model="salary.bonus" style="width: 90px;"></el-input>
+              </el-form-item>
+              <el-form-item label="总计">
+                <el-input  v-model="salary.total" style="width: 90px;"></el-input>
+              </el-form-item>
+              <el-form-item label="站长授权码">
+                <el-input  v-model="salary.authorizeCode" style="width: 90px;"></el-input>
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col :span="6">
+            <el-form>
+              <el-form-item label="输入金额">
+                <el-input  v-model="salary.finalSalary" style="width: 90px;"></el-input>
+              </el-form-item>
+              <el-button style="margin-left: 10px;" type="success">
+                下发薪资
+              </el-button>
+            </el-form>
+          </el-col>
+        </el-row>
       </div>
-
     </el-card>
+
     <!-- 筛选器，搜索条件 -->
     <div class="filter-container">
       <el-select v-model="listQuery.type" placeholder="类型" clearable style="width: 120px" class="filter-item">
@@ -17,17 +85,7 @@
       <el-select v-model="listQuery.operateStatus" placeholder="操作状态" clearable style="width: 110px" class="filter-item">
         <el-option v-for="item in operateOptions" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-date-picker
-        v-model="date"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-        :picker-options="pickerOptions"
-        style="margin-left:10px">
-      </el-date-picker>
+      <DateChoose @dateChoose="dateChoose"></DateChoose>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
         搜索
       </el-button>
@@ -53,12 +111,12 @@
           <span>{{ row.merchantsname }}</span>
         </template>
       </el-table-column>   
-      <el-table-column label="订单号" prop="orderID" sortable="custom" align="center" width="90" :class-name="getSortClass('id')">
+      <el-table-column label="订单号" prop="orderID" sortable="custom" align="center" width="140" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
       </el-table-column> 
-      <el-table-column label="第三方订单号" prop="orderID" sortable="custom" align="center" width="90" :class-name="getSortClass('id')">
+      <el-table-column label="第三方订单号" prop="orderID" sortable="custom" align="center" width="160" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
@@ -95,17 +153,21 @@
         </template>
       </el-table-column> 
     </el-table>
+
+
   </div>
 </template>
 
 <script>
 import { fetchList } from '@/api/article'
 import Pagination from '@/components/content/Pagination'
+import DateChoose from '@/components/content/DateChoose'
 
 export default {
   name: "Journal",
   components: {
-    Pagination
+    Pagination,
+    DateChoose
   },
   data() {
     return{
@@ -113,50 +175,36 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
-      date: '',
       listQuery: {
         page: 1,
         limit: 20,
+        date: undefined,
         province: undefined,
         importance: undefined,
         title: undefined,
         type: undefined,
         sort: '+id'
       },
-      typeOptions: ['发薪出账','消耗出账','充值入账','收益入账'],
-      operateOptions: ['已完成','已驳回'],
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, 
-          {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, 
-          {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }
-        ]
+      salary: {
+        staff: undefined,
+        orderNum: undefined,
+        grade: undefined,
+        salary: undefined,
+        fullaAttendance: undefined,
+        workYears: undefined,
+        praiseRate: undefined,
+        superOrder: undefined,
+        maintainServiceNum: undefined,
+        keepWorking: undefined,
+        waterSubsidy: undefined,
+        bonus: undefined,
+        total: undefined,
+        authorizeCode: undefined,
+        finalSalary: undefined
       },
-
+      staffGradeOptions: ['无','二级','一级'],
+      // 传入员工名单
+      staffOptions: ['张三','李四']
     }
   },
   created() {
@@ -203,18 +251,21 @@ export default {
       }
       this.handleFilter()
     },
+    dateChoose(date) {
+      this.listQuery.date = date
+    },
   }
 
 }
 </script>
 
 <style lang="scss" scoped>
-.balance {
-  width: 200px;
-  margin-bottom: 10px;
-  .balance-container {
-    height: 50px;
-    line-height: 50px;
+.salary {
+  margin-bottom: 20px;
+
+  .salary-container {
+    height: 200px;
+    // line-height: 200px;
   }
   .symbol {
     font-size: 20px;

@@ -29,11 +29,14 @@ export default {
     chartData: {
       type: Object,
       required: true
+    },
+    xAxisData: {
+      type: Array,
     }
   },
   data() {
     return {
-      chart: null
+      chart: null,
     }
   },
   watch: {
@@ -64,7 +67,9 @@ export default {
     setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          // 横坐标
+          // data: ['Monday', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: this.xAxisData,
           boundaryGap: false,
           axisTick: {
             show: false

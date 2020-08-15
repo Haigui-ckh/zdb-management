@@ -68,7 +68,7 @@
           <span>{{ row.merchantsname }}</span>
         </template>
       </el-table-column> 
-      <el-table-column label="外卖员ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="外卖员ID" prop="id" sortable="custom" align="center" width="120" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>

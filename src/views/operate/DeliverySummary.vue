@@ -70,19 +70,19 @@
         </template>
       </el-table-column>
            
-      <el-table-column label="类别" prop="type" sortable="custom" align="center" width="80">
+      <el-table-column label="类别" prop="type" align="center" width="80">
         <template slot-scope="{}">
           <!-- <span>{{ row.id }}</span> -->
           <span>快递</span>
         </template>
       </el-table-column> 
-      <el-table-column label="快递点" prop="station" sortable="custom" align="center" width="80">
+      <el-table-column label="快递点" prop="station" align="center" width="100">
         <template slot-scope="{}">
           <!-- <span>{{ row.id }}</span> -->
           <span>圆通</span>
         </template>
       </el-table-column> 
-      <el-table-column label="用户ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column label="用户ID" prop="id" sortable="custom" align="center" width="100" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
         </template>
@@ -97,7 +97,7 @@
           <span>{{ row.merchantsname }}</span>
         </template>
       </el-table-column> 
-      <el-table-column label="取件短信/寄出地址" prop="info" align="center" width="130">
+      <el-table-column label="取件短信/寄出地址" prop="info" align="center" width="140">
         <template slot-scope="{row}">
           <span>{{ row.merchantsname }}</span>
         </template>

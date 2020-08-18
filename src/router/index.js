@@ -395,6 +395,51 @@ export const asyncRoutes = [
       },
     ]
   },
+  // 站点配置
+  {
+    path: '/pagesetting',
+    component: Layout,
+    name: 'pagesetting',
+    alwaysShow: true,
+    meta: {
+      title: '页面配置',
+      icon: 'user',
+      roles: ['station']
+    },
+    children: [
+      {
+        path: 'userhomesetting',
+        component:  () => import('@/views/PageSetting/UserHomeSetting'),
+        name: 'userhomesetting',
+        meta: {
+          title: '用户首页',
+          roles: ['station']
+        },
+        children: [
+          {
+            path: 'userhome',
+            component:  () => import('@/views/userhome/Home'),
+            name: 'userhome',
+            // hidden: true,
+            meta: {
+              title: '用户主页',
+              roles: ['station']
+            },
+          }
+        ]
+      },
+      {
+        path: 'storelist',
+        component:  () => import('@/views/PageSetting/StoreList'),
+        name: 'storelist',
+        meta: {
+          title: '店铺列表',
+          roles: ['station']
+        },
+      },
+
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

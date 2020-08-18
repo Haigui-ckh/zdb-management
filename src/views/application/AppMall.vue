@@ -186,7 +186,6 @@ export default {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     grid-column-gap: 15px;
     grid-row-gap: 15px;
-  
   }
   .appitem {
     height: 170px;

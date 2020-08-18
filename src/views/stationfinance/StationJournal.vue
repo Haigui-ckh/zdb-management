@@ -204,7 +204,9 @@ export default {
       },
       staffGradeOptions: ['无','二级','一级'],
       // 传入员工名单
-      staffOptions: ['张三','李四']
+      staffOptions: ['张三','李四'],
+      typeOptions: ['发薪出账','消耗出账','充值入账','收益入账'],
+      operateOptions: ['已完成','已驳回']
     }
   },
   created() {

@@ -1,0 +1,338 @@
+.take,
+.give {
+	width: 100%;
+	height: 3rem;
+	background-color: #fff;
+	margin-top: 0.222222rem;
+	line-height: 2.777777rem;
+	/* float: left; */
+}
+
+.qu,
+.song {
+	color: #ee702b;
+	font-size: 1.111111rem;
+	float: left;
+	margin-left: 0.444444rem;
+	line-height: 2.777777rem;
+	position: relative;
+}
+
+.qu:after {
+	content: "取";
+	position: absolute;
+	color: #fff;
+	font-size: 0.555555rem;
+	left: 0.1rem;
+	top: -0.044444rem;
+}
+
+.song:after {
+	content: "送";
+	position: absolute;
+	color: #fff;
+	font-size: 0.555555rem;
+	left: 0.1rem;
+	top: -0.044444rem;
+}
+
+.choiceAddr {
+	font-size: 0.80rem;
+	float: left;
+	margin: 0;
+	margin-left: 0.444444rem;
+	
+}
+
+.selectBox {
+	width: 3.111111rem;
+	height: 1.333333rem;
+	float: right;
+	border: 0.044444rem solid #d0ced3;
+	font-size: 0.666666rem;
+	margin-top: 0.733333rem;
+	margin-right: 0.888888rem;
+	border-radius: 0.222222rem;
+	position: relative;
+
+}
+
+.sAddr {
+	width: 3.111111rem;
+	height: 1.333333rem;
+	font-size: 0.666666rem;
+	appearance: none;
+	-moz-appearance: none;
+	text-indent: 0.444444rem;
+	-webkit-appearance: none;
+	border: none;
+	background: transparent;
+	position: absolute;
+	top: 0rem;
+	left: 0rem;
+	outline: none;
+
+}
+
+.down {
+	position: absolute;
+	right: 0.222222rem;
+	top: 0.333333rem;
+	color: #bfbdca;
+}
+
+.sAddr option {
+	font-size: 0.355555rem;
+}
+
+.giveBox {
+	float: right;
+	width: 2.111111rem;
+	height: 1.222222rem;
+	border-left: 0.022222rem solid #e2e2e2;
+	margin-top: 0.777777rem;
+}
+
+.giveBox img {
+	width: 0.888888rem;
+	margin-left: 0.666666rem;
+	margin-top: 0.222222rem;
+	display: block;
+}
+
+.expInfo,
+.screenshotInfo,
+.remarks,
+.specs,
+.special,
+.sub,
+.seAddr {
+	width: 100%;
+	height: 3rem;
+	background-color: #fff;
+	margin-top: 0.4rem;
+	/* padding: 10px 0.666666rem 0.222222rem 0.444444rem; */
+}
+
+.expTit {
+	float: left;
+	font-size: 0.8rem;
+	margin-top: 10px;
+	clear: both;
+
+}
+
+.infotext {
+	float: right;
+	width: 12rem;
+	height: 2.4rem;
+	border: 1px solid #7a7a7a;
+	font-size: 0.7rem;
+	resize: none;
+	border-radius: 0.24rem;
+	margin-top: 0.12rem;
+	outline: none;
+	padding: 0.12rem;
+}
+
+.remarkInput {
+	float: right;
+	width: 12.5rem;
+	height: 1.4rem;
+	border: 1px solid #7a7a7a;
+	font-size: 0.7rem;
+	text-indent: 0.24rem;
+	outline: none;
+	border-radius: 0.24rem;
+	margin-top: 0.24rem;
+}
+
+.upImg {
+	width: 2.222222rem;
+	height: 2.222222rem;
+	float: left;
+	margin-left: 0.444444rem;
+	border: 0.044444rem dashed #7a7a7a;
+	position: relative;
+	margin-top: 0.111111rem;
+}
+
+.upImg:after {
+	content: "+";
+	position: absolute;
+	top: 0.333333rem;
+	left: 0.666666rem;
+	color: #999999;
+
+}
+
+.upImg img {
+	width: 2.222222rem;
+	height: 2.222222rem;
+	position: absolute;
+}
+
+.choisImg {
+	width: 2.222222rem;
+	height: 2.222222rem;
+	position: absolute;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	opacity: 0;
+	z-index: 99;
+
+}
+
+.voucher {
+	float: left;
+	font-size: 0.555555rem;
+	color: #cccccc;
+	line-height: 2.777777rem;
+	margin-left: 0.444444rem;
+}
+
+.remarks {
+	clear: both;
+	width: 100%;
+	height: 2.222222rem;
+	background-color: #fff;
+	margin-top: 0.111111rem;
+}
+
+.specs {
+	height: 5.777777rem;
+}
+
+.sub {
+	height: 4.555555rem;
+}
+
+.dan {
+	font-size: 0.666666rem;
+	float: left;
+	color: #e77032;
+	margin-top: 0.444444rem;
+}
+
+.num {
+	float: left;
+	width: 1.888888rem;
+	height: 1.111111rem;
+	border: 0.066666rem solid #cfcfcf;
+	outline: none;
+	text-align: center;
+	font-size: 0.666666rem;
+	border-radius: 0.222222rem;
+	margin-top: 0.333333rem;
+}
+
+.count {
+	float: right;
+	margin-right: 0.666666rem;
+	margin-bottom: 1.111111rem;
+}
+
+.zj {
+	font-size: 0.666666rem;
+}
+
+.money {
+
+	font-size: 0.666666rem;
+	color: #dd5b18;
+}
+
+.btn,
+.dial {
+	display: block;
+	clear: both;
+	outline: none;
+	width: 12.8rem;
+	height: 1.6rem;
+	margin: auto;
+	font-size: 0.85rem;
+	border-radius: 1.2rem;
+	border: none;
+	color: #fff;
+	background: linear-gradient(to bottom, #fda15f 30%, #f58c4a 50%, #f1803d 70%, #e87737 100%);
+}
+
+
+.give-addr-detail {
+	height: 100%;
+	line-height: 100%;
+	flex-wrap: wrap;
+	background-color: #f2f2f2;
+	border-radius: 15px;
+}
+.give-addrInfo {
+	margin-left: 10px;
+	/* height: 3rem; */
+	line-height: 3rem;
+	color: #000000;
+}
+.give-addremark {
+	font-size: 12px;
+	height: 1rem;
+	line-height: 1rem;
+	margin-left: 10px;
+	color: #cccccc;
+}
+
+/* 
+.do {
+	font-size: 0.622222rem;
+}
+
+.getAd {
+	font-size: 0.555555rem;
+	margin-top: 0.222222rem;
+}
+
+.getAd span {
+	color: #737373;
+}
+
+.ts {
+	font-size: 0.444444rem;
+	color: #b5b5b5;
+	margin-top: 0.444444rem;
+}
+
+.jdr {
+	font-size: 0.533333rem;
+	margin-top: 0.444444rem;
+}
+
+.qsTel {
+	position: absolute;
+	width: 3.444444rem;
+	height: 1.222222rem;
+	border: 0.044444rem solid #017eff;
+	text-align: center;
+	line-height: 1.222222rem;
+	font-size: 0.555555rem;
+	color: #017eff;
+	border-radius: 0.222222rem;
+	right: 0.444444rem;
+	bottom: 0.444444rem;
+}
+
+.qsTel.comment {
+	color: #ffb500;
+	border: 0.044444rem solid #ffb500;
+}
+
+.riderTel {
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.7);
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: none;
+	z-index: 9999;
+}
+/* super end */
+

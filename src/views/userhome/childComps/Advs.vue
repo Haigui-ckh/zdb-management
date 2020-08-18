@@ -1,7 +1,8 @@
 <template> 
   <div id="advs">
-    <!-- <span>广告展示</span> -->
-    <comps-title>广告展示</comps-title>
+
+    <comps-title>{{containerTitle}}</comps-title>
+
     <div class="advs-item" v-for="(item,index) in advsList" :key="index">
       <a :href="item.link">
         <img :src="item.imgUrl">
@@ -18,7 +19,8 @@
       CompsTitle
     },
     props: {
-      advsList: Array
+      advsList: Array,
+      containerTitle: String
     }
   }
 </script>

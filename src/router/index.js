@@ -317,7 +317,7 @@ export const asyncRoutes = [
     alwaysShow: true,
     meta: {
       title: '管理系统',
-      icon: 'chart',
+      icon: 'user',
       roles: ['station']
     },
     children: [
@@ -403,7 +403,7 @@ export const asyncRoutes = [
     alwaysShow: true,
     meta: {
       title: '页面配置',
-      icon: 'user',
+      icon: 'dashboard',
       roles: ['station']
     },
     children: [

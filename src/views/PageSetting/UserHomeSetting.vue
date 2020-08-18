@@ -75,7 +75,62 @@
 
 
         <!-- tab3 -->
-        <el-tab-pane label="营销配置" name="third">营销配置</el-tab-pane>
+        <el-tab-pane label="营销配置" name="third">
+          <!-- 天天特价，暂时搁置 -->
+          <el-card class="dailySpecialContainer">
+            <div slot="header" class="clearfix">
+              <span>天天特价</span>
+              <el-button type="text" style="float: right; padding: 3px 0" disabled>功能暂未开放</el-button>
+            </div>
+            <el-switch v-model="dailySpecialStatus" disabled></el-switch>
+          </el-card>
+           <!-- 长条广告区 -->
+          <el-card class="advsContainer">
+            <div slot="header" class="clearfix">
+              <span>广告展示</span>
+              <!-- <el-button type="text" style="float: right; padding: 3px 0" disabled></el-button> -->
+            </div>
+            
+            <div class="advsContainerTitle">
+              <span>修改展示区名称：</span>
+              <el-input v-model="userHomeData.advsTitle" style="width:200px"></el-input>
+            </div>
+
+            <div class="advsContainerContent">
+              <div v-for="(item,index) in userHomeData.advsList" :key="index" class="advsContainerContent-item">
+                <img :src="item.imgUrl">
+                <el-button type="text" @click="advdialogVisible = true">修改</el-button>
+                <el-button type="text" style="color:red" @click="advDelete(index)">删除</el-button>
+              </div>
+            </div>
+
+            <el-dialog
+              title="修改广告"
+              :visible.sync="advdialogVisible"
+              width="600px">
+                <span style="margin-bottom:30px">点击图片可重新上传</span>
+                  <el-upload
+                  action="#"  
+                  accept="image/png,image/gif,image/jpg,image/jpeg"
+                  :on-change="handleChange">
+
+                    
+                  </el-upload>
+                <div v-for="(item,index) in userHomeData.advsList" :key="index" class="advsDialogContent">
+                  <img :src="item.imgUrl" >
+                  <el-input v-model="item.link" class="advsDialogContent-ipt"></el-input>
+                </div>
+
+
+                <span slot="footer" class="dialog-footer">
+                  <el-button type="primary" @click="advdialogVisible = false">确 定</el-button>
+                  <el-button @click="advdialogVisible = false">取 消</el-button>
+                </span>
+            </el-dialog>
+
+          </el-card>
+          
+        </el-tab-pane>
       </el-tabs>
     </div>
     
@@ -92,7 +147,7 @@ export default {
   },
   data() {
     return {
-      activeName: 'second',
+      activeName: 'third',
       userHomeData: {
         funcList:[
           { 
@@ -139,6 +194,15 @@ export default {
           { name: '小龙坎火锅', imgUrl: 'img/s2.jpg' }, 
           { name: '古茗', imgUrl: 'img/s3.jpg' }
         ],
+        advsTitle: '广告展示',
+        advsList: [
+          { imgUrl:'img/campus1.png', link: ''},
+          { imgUrl:'img/campus1.png', link: ''},
+        ],
+        // advsList: [
+        //   { url:'img/campus1.png', link: ''},
+        //   { url:'img/campus1.png', link: ''},
+        // ],
       },
       funcTemp: {
         imgUrl: '',
@@ -161,7 +225,9 @@ export default {
       rsTemp: {
         name: '',
         imgUrl: ''
-      }
+      },
+      dailySpecialStatus: false,
+      advdialogVisible: false
     };
   },
   methods: {
@@ -210,6 +276,17 @@ export default {
       this.userHomeData.recommendStoreList.push(temp)
       this.rsDialogVisible = false
       this.rsAddIndex = ''
+    },
+    advDelete(index) {
+      this.userHomeData.advsList.splice(index,1)
+    },
+    // advUploadSuccess(file,index) {
+    //   // this.userHomeData.advsList[index].imgUrl = file.url
+    // },
+    handleChange(files,fileList){
+      if(fileList.length>1){
+      fileList.splice(0,1);
+      }
     }
 
   }
@@ -270,5 +347,37 @@ export default {
   float: right;
   margin-top:5px;
   margin-right: 5px; 
+}
+.dailySpecialContainer {
+  width: 400px;
+  margin-bottom: 20px;
+}
+.advsContainer {
+  width: 400px;
+}
+.advsContainerTitle span {
+  font-size: 14px;
+}
+.advsContainerContent-item {
+  width: 380px;
+  height: 60px;
+  line-height: 60px;
+}
+.advsContainerContent-item img{
+  width: 260px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+.advsDialogContent {
+  width: 380px;
+  margin-bottom: 10px;
+  display: flex;
+}
+.advsDialogContent img{
+  width: 260px;
+  margin-right: 10px;
+}
+.advsDialogContent-ipt {
+  width: 300px;
 }
 </style>

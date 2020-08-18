@@ -3,8 +3,7 @@
 
     <div class="store-list-name">全部店铺</div>
 
-    <div class="store-list-item" v-for="(store,index) in stores" :key="index"
-    @click="storelistClick(index)" :class="{active: index === isClick}">
+    <div class="store-list-item" v-for="(store,index) in stores" :key="index">
       <div class="store-list-item-img">
         <img :src="store.imgUrl">
       </div>
@@ -35,23 +34,6 @@ export default {
     stores: {
       type: Array,
       default: []
-    }
-  },
-  data() {
-    return{
-      isClick: -1
-    }
-  },
-  methods: {
-    storelistClick(index) {
-      this.isClick = index;
-      //此处暂时传入数组下标作为标识
-      this.$router.push(
-        {
-          path: '/Store',
-          query: {storeid: index}
-        }
-      )
     }
   }
 }

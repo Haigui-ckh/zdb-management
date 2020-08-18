@@ -2,8 +2,7 @@
   <div id="recommend-store">
     <comps-title>推荐店铺</comps-title>
     <div class="rec-store-item" 
-        v-for="(item,index) in merchants" :key="index"
-        @click="restoreClick(index)">
+        v-for="(item,index) in merchants" :key="index">
       <img :src="item.imgUrl" alt="">
       <span>{{item.name}}</span>
     </div>
@@ -22,18 +21,6 @@
       merchants: {
         type: Array
       }
-    },
-    methods: {
-      restoreClick(index) {
-        this.isClick = index;
-        //此处暂时传入数组下标作为标识,后可改为商铺id
-        this.$router.push(
-          {
-            path: '/Store',
-            query: {storeid: index}
-          }
-        )
-      }      
     }
 
   }

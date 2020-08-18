@@ -15,7 +15,7 @@
       <home-swiper :swiperImgList="swiperList"/>
       <show-service />          <!-- 营销配置，快递服务等 -->             
       <function-list :functionList="homeData.funcList" />       <!-- 功能区 --><!-- 项目需求中要求可自由增添或删减 -->    
-      <advs :advsList="advsList" :containerTitle="homeData.advsTitle"/>                          <!-- 广告条部分 -->   
+      <advs :advsList="homeData.advsList" :containerTitle="homeData.advsTitle"/>                          <!-- 广告条部分 -->   
       <daily-special  :specialGoods="dailyGoodsList"/>   <!-- 天天特价 -->
       <recommend-store :merchants="homeData.recommendStoreList" />    <!-- 推荐店铺 -->
       <store-list :stores="storeList"/>

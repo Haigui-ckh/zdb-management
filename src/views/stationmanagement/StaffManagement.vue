@@ -71,7 +71,7 @@
           <el-button v-if="row.status!=='passed'" size="mini" type="success" @click="handleModifyStatus(row,'passed')">
             恢复权限
           </el-button>
-          <el-button v-if="row.status=='passed'" type="danger" size="mini">
+          <el-button v-if="row.status=='passed'" type="danger" size="mini" @click="handleModifyStatus(row,'passed')">
             撤销权限
           </el-button>
         </template>

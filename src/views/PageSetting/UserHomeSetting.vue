@@ -99,7 +99,7 @@
             <div class="advsContainerContent">
               <div v-for="(item,index) in userHomeData.advsList" :key="index" class="advsContainerContent-item">
                 <img :src="item.imgUrl">
-                <el-button type="text" @click="advdialogVisible = true">修改</el-button>
+                <el-button type="text" @click="advUpdate(index)">修改</el-button>
                 <el-button type="text" style="color:red" @click="advDelete(index)">删除</el-button>
               </div>
             </div>
@@ -108,22 +108,18 @@
               title="修改广告"
               :visible.sync="advdialogVisible"
               width="600px">
-                <span style="margin-bottom:30px">点击图片可重新上传</span>
-                  <el-upload
-                  action="#"  
-                  accept="image/png,image/gif,image/jpg,image/jpeg"
-                  :on-change="handleChange">
+                <span class="tips">点击图片可重新上传</span>
 
-                    
+                <div class="advsDialogContent">
+                  <el-upload action="#" :on-change="advUploadSuccess" :auto-upload="false">
+                    <img :src="advsTemp.imgUrl" >
                   </el-upload>
-                <div v-for="(item,index) in userHomeData.advsList" :key="index" class="advsDialogContent">
-                  <img :src="item.imgUrl" >
-                  <el-input v-model="item.link" class="advsDialogContent-ipt"></el-input>
+
+                  <el-input v-model="advsTemp.link" class="advsDialogContent-ipt"></el-input>
                 </div>
 
-
                 <span slot="footer" class="dialog-footer">
-                  <el-button type="primary" @click="advdialogVisible = false">确 定</el-button>
+                  <el-button type="primary" @click="confirmUpdate">确 定</el-button>
                   <el-button @click="advdialogVisible = false">取 消</el-button>
                 </span>
             </el-dialog>
@@ -199,10 +195,6 @@ export default {
           { imgUrl:'img/campus1.png', link: ''},
           { imgUrl:'img/campus1.png', link: ''},
         ],
-        // advsList: [
-        //   { url:'img/campus1.png', link: ''},
-        //   { url:'img/campus1.png', link: ''},
-        // ],
       },
       funcTemp: {
         imgUrl: '',
@@ -227,7 +219,12 @@ export default {
         imgUrl: ''
       },
       dailySpecialStatus: false,
-      advdialogVisible: false
+      advdialogVisible: false,
+      advsTemp: {
+        imgUrl: '',
+        link: ''
+      },
+      advsUpdateIndex: undefined
     };
   },
   methods: {
@@ -280,14 +277,20 @@ export default {
     advDelete(index) {
       this.userHomeData.advsList.splice(index,1)
     },
-    // advUploadSuccess(file,index) {
-    //   // this.userHomeData.advsList[index].imgUrl = file.url
-    // },
-    handleChange(files,fileList){
-      if(fileList.length>1){
-      fileList.splice(0,1);
-      }
-    }
+    advUpdate(index) {
+      this.advsUpdateIndex = index
+      this.advsTemp =  Object.assign({}, this.userHomeData.advsList[index])
+      this.advdialogVisible = true
+    },
+    advUploadSuccess(file) {
+      this.advsTemp.imgUrl = URL.createObjectURL(file.raw);
+    },
+    confirmUpdate() {
+      this.advdialogVisible = false
+      this.userHomeData.advsList[this.advsUpdateIndex] =  Object.assign({}, this.advsTemp)
+    },
+
+
 
   }
 }
@@ -365,6 +368,7 @@ export default {
 }
 .advsContainerContent-item img{
   width: 260px;
+  height: 44px;
   margin-right: 10px;
   vertical-align: middle;
 }
@@ -379,5 +383,10 @@ export default {
 }
 .advsDialogContent-ipt {
   width: 300px;
+}
+.tips {
+  font-size: 14px;
+  color: #909399;
+  margin-left: 10px;
 }
 </style>

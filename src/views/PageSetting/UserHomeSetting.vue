@@ -269,10 +269,13 @@ export default {
     },
     rsAddConfirm() {
       // 通过下标获取storelist里的数据
-      let temp =  Object.assign({}, this.userHomeData.storeList[this.rsAddIndex])
-      this.userHomeData.recommendStoreList.push(temp)
-      this.rsDialogVisible = false
-      this.rsAddIndex = ''
+      //不等于undefined说明select有选择
+      if (this.rsAddIndex != undefined) {
+        let temp =  Object.assign({}, this.userHomeData.storeList[this.rsAddIndex])
+        this.userHomeData.recommendStoreList.push(temp)
+        this.rsAddIndex = undefined
+      }
+      // this.rsDialogVisible = false
     },
     advDelete(index) {
       this.userHomeData.advsList.splice(index,1)

@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <!-- 楼栋添加 -->
     <el-card class="add-address">
       <!-- 地址添加表单 -->
       <el-form ref="form" :model="address" label-width="80px">
@@ -33,24 +34,47 @@
       </el-collapse>
     </el-card>
 
+    <el-card>
+      <el-button @click="handleSpecs">规格管理</el-button>
+      <el-button @click="handleSpecial">特殊服务</el-button>
+    </el-card>
+    <el-dialog :visible.sync="specsDialogVisible" width="400px" >
+
+      <div class="specs-head">
+        <el-input v-model="specsTemp.name" :placeholder="specsIptText" style="width:170px"></el-input>
+        <el-input v-model="specsTemp.price" placeholder="价格" style="width:80px"></el-input>
+        <el-button type="success" style="margin-left:23px" @click="confirmSpecs">确定</el-button>
+      </div>
+
+      <!-- 弹出框下显示的已存在的规格或特殊服务列表 -->
+      <ul class="specs-list">
+        <li v-for="(item,index) in listTemp" :key="index">
+          <div class="specs-list-head">{{item.name}}</div>
+          <div class="specs-list-content"> <span>{{item.price}}</span> </div>
+          <div class="specs-list-tail"> <el-button type="danger" size="mini" @click="deleteSpecsItem(index)">删除</el-button> </div>
+        </li>
+      </ul>
+
+      
+
+    </el-dialog>
+
     <!-- 站长信息 -->
     <el-row :gutter="20">
       <el-col :xs="24" :md="12" :lg="6">
         <el-card class="infocard">
-          <div class="text item"> 站长姓名：{{masterInfo.name}}</div> 
-          <div class="text item"> 
-            站长手机：{{masterInfo.tel}}
-            <span class="modifyTel">修改</span>
-          </div> 
-          <div class="text item"> 站长QQ：{{masterInfo.qq}}</div> 
-          <div class="text item"> 
-            原始密码：{{masterInfo.pwd}}
-            <span class="modifyTel">修改</span>
-          </div> 
-          <div class="text item"> 
-            微信绑定：
-            <span class="modifyTel">修改</span>
-          </div> 
+          <el-form ref="form" :model="masterInfo" label-width="80px" size="mini">
+            <el-form-item label="站长姓名">{{masterInfo.name}}</el-form-item>
+            <el-form-item label="站长手机">{{masterInfo.tel}}</el-form-item>
+            <el-form-item label="站长QQ">{{masterInfo.qq}}</el-form-item>
+            <el-form-item label="原始密码">
+              {{masterInfo.pwd}}
+              <span class="modifyTel">修改</span>
+            </el-form-item>
+            <el-form-item label="微信绑定">
+              <span class="modifyTel">修改</span>
+            </el-form-item>
+          </el-form>
         </el-card>
       </el-col>
       <el-col  :xs="24" :md="12" :lg="6">
@@ -63,7 +87,7 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="邮箱">
-
+                <el-input v-model="masterInfo.email"></el-input>
               </el-form-item>
               <el-form-item label="入学">
                   <el-select v-model="masterInfo.admissionDate">
@@ -127,8 +151,7 @@
       </el-col>
       <el-col  :xs="24" :md="12" :lg="6">
         <el-card class="infocard">
-          
-          
+
         </el-card>
       </el-col>
     </el-row>
@@ -160,6 +183,7 @@ export default {
         tel: '14587459654',
         qq: '147852369',
         pwd: '******',
+        email:'',
         admissionDate: '',
         education: '',
         educationGrade: '',
@@ -177,7 +201,27 @@ export default {
       gradeOptions: ['一年级','二年级','三年级','四年级'],
       cityOptions: [],
       countyOptions: undefined,
-      arealist: undefined
+      arealist: undefined,
+      specsDialogVisible: false,
+      specsTemp: {
+        name: '',
+        price: ''
+      },
+      specifications: [
+        { id: 1, name: '1~5kg', price: 3 },
+        { id: 2, name: '10kg~20kg', price: 6 },
+        { id: 3, name: '电子产品', price: 0 },
+        { id: 4, name: '体积较大', price: 0 },
+      ],
+      specialservice: [
+        { id: 1, name: '加急', price: 2},
+        { id: 1, name: '托管', price: 1},
+        { id: 1, name: '超级加急', price: 4},
+      ],
+      listTemp: undefined,
+      addSpec: '',
+      updateObject: '',
+      specsIptText: ''
 
     }
   },
@@ -192,6 +236,45 @@ export default {
     provicenChoose(index) {
       console.log(index)
       this.cityOptions = this.arealist[index].city
+    },
+    confirmSpecs() {
+      let temp = Object.assign({},this.specsTemp)
+      // this.listTemp.push(temp)
+
+      if (this.updateObject = 'specs') {
+        this.specifications.push(temp)
+      } else if (this.updateObject = 'special') {
+        this.specialservice.push(temp)
+      }
+
+      /*
+      *   上传到服务器
+      */
+
+     this.specsTemp = {
+       name: '',
+       price: ''
+     }
+    },
+    handleSpecs() {
+      this.updateObject = 'specs'
+      // 指针
+      this.listTemp = this.specifications
+      this.specsIptText = '请输入规格'
+      this.specsDialogVisible = true
+    },
+    handleSpecial() {
+      this.updateObject = 'special'
+      // 指针
+      this.listTemp = this.specialservice
+      this.specsIptText = '请输入特殊服务名'
+      this.specsDialogVisible = true
+    },
+    deleteSpecsItem(index) {
+      this.listTemp.splice(index,1)
+      /*
+      *   提交更改
+      */
     }
   }
 }
@@ -223,5 +306,30 @@ export default {
   }
   .el-form-item__label {
     padding: 0;
+  }
+  .specs-head {
+    margin-bottom: 10px;
+  }
+  .specs-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  .specs-list li{
+    height: 80px;
+    line-height: 80px;
+    display: flex;
+    /* background-color: orange; */
+  }
+  .specs-list-head{
+    height: 80px;
+    width: 190px;
+    overflow: hidden;
+  }
+  .specs-list-content{
+    width: 80px;
+    padding-left: 10px;
+  }
+  .specs-list-tail {
+    margin: 0 auto;
   }
 </style>
